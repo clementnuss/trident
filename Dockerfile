@@ -8,7 +8,8 @@ RUN apk add nfs-utils
 RUN ldd /sbin/mount.nfs4 | tr -s '[:space:]' '\n' | grep '^/' | xargs -I % sh -c 'mkdir -p /nfs-deps/$(dirname %) && cp -L % /nfs-deps/%'
 RUN ldd /sbin/mount.nfs | tr -s '[:space:]' '\n' | grep '^/' | xargs -I % sh -c 'mkdir -p /nfs-deps/$(dirname %) && cp -r -u -L % /nfs-deps/%'
 
-FROM --platform=linux/${ARCH} gcr.io/distroless/static@sha256:41972110a1c1a5c0b6adb283e8aa092c43c31f7c5d79b8656fbffff2c3e61f05
+FROM --platform=linux/${ARCH} debian:latest
+RUN apt update && apt-get --no-install-recommends install -y nfs-common
 
 LABEL maintainers="The NetApp Trident Team" \
       app="trident.netapp.io" \
