@@ -61,18 +61,18 @@ func main() {
 		binary = binary[idx+1:]
 	}
 	// Now implement the path search logic, but in the host's filesystem
-	argv0 := findBinary("/host", binary)
+	argv0 := findBinary("", binary)
 	if "" == argv0 {
 		panic(binary + " not found")
 	}
-	// Chroot in the the host's FS
-	if err := unix.Chroot("/host"); nil != err {
-		panic(err)
-	}
-	// Change cwd to the root
-	if err := unix.Chdir("/"); nil != err {
-		panic(err)
-	}
+	// // Chroot in the the host's FS
+	// if err := unix.Chroot("/host"); nil != err {
+	// 	panic(err)
+	// }
+	// // Change cwd to the root
+	// if err := unix.Chdir("/"); nil != err {
+	// 	panic(err)
+	// }
 	// Exec the intended binary
 	if err := unix.Exec(argv0, argv, modifyEnv(os.Environ())); nil != err {
 		panic(err)
